@@ -1,0 +1,7 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SongVault</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head>
+<body><main class="wrap"><header><div class="logo">♫</div><div><h1>SongVault</h1><p>Search and download openly licensed audio & video</p></div></header>
+<form method="post" class="search"><input name="q" value="{{ query }}" placeholder="Song, artist, concert, or video..." required><button>Search</button></form>
+<p class="notice">Downloads are limited to Internet Archive items whose metadata indicates Public Domain or Creative Commons licensing. Always check the item’s license and follow its terms.</p>
+{% with messages = get_flashed_messages() %}{% for m in messages %}<p class="notice">{{m}}</p>{% endfor %}{% endwith %}
+{% if results %}<h2>Search results</h2><section class="results">{% for item in results %}<article><div><h3>{{ item.title or item.identifier }}</h3><p>{{ item.creator or "Creator not listed" }} · {{ item.year or "Year unknown" }} · {{ item.mediatype }}</p><small>ID: {{ item.identifier }}</small></div><a class="download" href="{{ url_for('download', identifier=item.identifier) }}">Download</a></article>{% endfor %}</section>{% elif query %}<p>No matching items found.</p>{% endif %}
+<footer>Powered by Internet Archive metadata · Use only content you have rights to download.</footer></main></body></html>
